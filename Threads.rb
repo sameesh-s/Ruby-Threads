@@ -2,6 +2,7 @@
 require 'net/http'
 require 'openssl'
 require 'csv'
+require 'thread'
 
 def write(arr)
   CSV.open("myfile.csv","a") do |csv|
@@ -28,18 +29,18 @@ def get_row(address,index)
   arr
 end
 
-
 @address1 = "flipkart.com"
 @address2 = "google.com"
 @address3 = "amazon.in"
-=begin
-names = []
-CSV.foreach("/home/xcavenger/sandbox/Ruby-Threads/top-1m.csv") do |row|
+
+names=[]
+CSV.foreach("/home/xcavenger/sandbox/Ruby-Threads/test.csv") do |row|
   names.push(row[1])
-  puts row[1]
 end
-=end
+
 mutex = Mutex.new
+cv = ConditionVariable.new
+
 threads = (1..3).map do |i|
   Thread.new(i) do |i|
     address = instance_variable_get("@address#{i}")
@@ -50,3 +51,4 @@ threads = (1..3).map do |i|
   end
 end
 threads.each {|t| t.join}
+threads.each {|t| puts t.stop?}

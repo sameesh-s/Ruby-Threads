@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'net/http'
 require 'openssl'
-require 'csv'
 require 'thread'
 
 def write(arr)
@@ -34,9 +33,8 @@ end
 @address3 = "amazon.in"
 
 names=[]
-CSV.foreach("/home/xcavenger/sandbox/Ruby-Threads/test.csv") do |row|
-  names.push(row[1])
-end
+names=File.read("/home/xcavenger/sandbox/Ruby-Threads/test.csv").split.map{|i| i.split(",").last}
+#puts names
 
 mutex = Mutex.new
 cv = ConditionVariable.new

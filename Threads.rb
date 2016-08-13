@@ -2,7 +2,6 @@
 require 'net/http'
 require 'openssl'
 require 'thread'
-
 def write(arr)
   CSV.open("myfile.csv","a") do |csv|
     csv <<arr
@@ -16,7 +15,7 @@ def get_code(address)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end 
-  return http.get(uri.request_uri).code   
+  return http.head(uri.request_uri).code   
 end
 
 def get_row(address,index)
